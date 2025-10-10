@@ -15,11 +15,11 @@ interface UserProfileProps {
   onSettings?: () => void;
 }
 
-export default function UserProfile({ 
-  user = null, 
-  onLogin, 
+export default function UserProfile({
+  user = null,
+  onLogin,
   onLogout,
-  onSettings 
+  onSettings
 }: UserProfileProps) {
   const [isOpen, setIsOpen] = useState(false);
 

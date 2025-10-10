@@ -10,10 +10,10 @@ interface HeroBackgroundProps {
   onVideoEnd?: () => void;
 }
 
-export default function HeroBackground({ 
-  isVideoPlaying, 
-  videoSrc, 
-  imageSrc, 
+export default function HeroBackground({
+  isVideoPlaying,
+  videoSrc,
+  imageSrc,
   title,
   showOverlay,
   onVideoEnd
@@ -52,7 +52,7 @@ export default function HeroBackground({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           onEnded={handleVideoEnd}
-          onError={(e) => {
+          onError={() => {
             console.error('Video failed to load');
           }}
         />
@@ -69,15 +69,15 @@ export default function HeroBackground({
           }}
         />
       )}
-      
+
       {/* Gradients */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: showOverlay ? 1 : 0 }}
         transition={{ duration: 0.3 }}
       />
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-gradient-to-t from-[#141414]/80 via-transparent to-transparent z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: showOverlay ? 1 : 0 }}

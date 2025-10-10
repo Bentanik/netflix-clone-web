@@ -65,3 +65,6 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
+
+public/video.mp4
+public/thumnail.jpg

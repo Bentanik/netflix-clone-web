@@ -1,13 +1,27 @@
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import NotificationBell from './NotificationBell';
 import UserProfile from './UserProfile';
+import AuthModal from './AuthModal';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
 }
 
 export default function Header({ onSearch }: HeaderProps) {
-  const navItems = ['Home', 'TV Shows', 'Movies', 'New & Popular', 'My list', 'Collections', 'Friends'];
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const location = useLocation();
+
+  const navItems = [
+    { label: 'Home', path: '/home' },
+    { label: 'TV Shows', path: '/tv-shows' },
+    { label: 'Movies', path: '/movies' },
+    { label: 'New & Popular', path: '/new' },
+    { label: 'My List', path: '/my-list' },
+    { label: 'Collections', path: '/collections' },
+    { label: 'Friends', path: '/friends' },
+  ];
 
   // Mock user data - thay thế bằng data thật từ context/store
   const mockUser = {
@@ -41,7 +55,7 @@ export default function Header({ onSearch }: HeaderProps) {
 
   const handleLogin = () => {
     console.log('Login clicked');
-    // Implement login logic
+    setIsAuthModalOpen(true);
   };
 
   const handleLogout = () => {
@@ -55,44 +69,59 @@ export default function Header({ onSearch }: HeaderProps) {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* Background with better gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none" />
-      
-      <div className="relative flex items-center justify-between px-12 py-6">
-        {/* Logo */}
-        <div className="flex items-center gap-10">
-          <h1 className="text-red-600 text-3xl font-bold tracking-wider cursor-pointer hover:text-red-700 transition-colors">
-            NETFLIX
-          </h1>
-          
-          {/* Navigation */}
-          <nav className="hidden md:flex gap-7">
-            {navItems.map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-sm text-gray-300 hover:text-white transition-colors font-medium relative group"
-              >
-                {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
-          </nav>
-        </div>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        {/* Background with better gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none" />
 
-        {/* Right side icons */}
-        <div className="flex items-center gap-7">
-          <SearchBox onSearch={handleSearch} placeholder="Titles, people, genres" />
-          <NotificationBell notifications={mockNotifications} />
-          <UserProfile 
-            user={mockUser}
-            onLogin={handleLogin}
-            onLogout={handleLogout}
-            onSettings={handleSettings}
-          />
+        <div className="relative flex items-center justify-between px-12 py-6">
+          {/* Logo */}
+          <div className="flex items-center gap-10">
+            <h1 className="text-red-600 text-3xl font-bold tracking-wider cursor-pointer hover:text-red-700 transition-colors">
+              NETFLIX
+            </h1>
+
+            {/* Navigation */}
+            <nav className="hidden md:flex gap-7">
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`text-sm transition-colors font-medium relative group ${isActive ? 'text-white' : 'text-gray-300 hover:text-white'
+                      }`}
+                  >
+                    {item.label}
+                    <span
+                      className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                        }`}
+                    />
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Right side icons */}
+          <div className="flex items-center gap-7">
+            <SearchBox onSearch={handleSearch} placeholder="Titles, people, genres" />
+            <NotificationBell notifications={mockNotifications} />
+            <UserProfile
+              user={mockUser}
+              onLogin={handleLogin}
+              onLogout={handleLogout}
+              onSettings={handleSettings}
+            />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
+    </>
   );
 }

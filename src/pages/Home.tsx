@@ -1,5 +1,6 @@
 import HeroBanner from '@/components/HeroBanner';
 import MovieRow from '@/components/MovieRow';
+import AuthDemo from '@/components/AuthDemo';
 import type { HeroSlide } from '@/types/hero';
 
 export default function Home() {
@@ -15,7 +16,7 @@ export default function Home() {
       episodes: 9,
       match: 100,
       genres: ['Animation', 'Action', 'Adventure'],
-      image: '/images/thumnail.jpg',
+      image: 'thumnail.jpg',
       video: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // Replace with actual video
       badge: 'Series',
     },
@@ -51,47 +52,57 @@ export default function Home() {
     {
       id: 1,
       title: 'Jurassic World',
-      image: 'https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWYtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+      image: '/thumnail.jpg',
       rating: 6.9,
       year: 2015,
       duration: '2h 4m',
       match: 98,
+      genres: ['Action', 'Adventure', 'Sci-Fi'],
+      description: 'Twenty-two years after the original Jurassic Park failed, the new park is open for business.',
     },
     {
       id: 2,
       title: 'The King',
-      image: 'https://m.media-amazon.com/images/M/MV5BYmIzYzhjNTAtOWUwNy00NTc1LWI0MTgtN2Y3MjNmNTU5Mzc3XkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 7.3,
       year: 2019,
       duration: '2h 20m',
       match: 93,
+      genres: ['Drama', 'History', 'War'],
+      description: 'Young Henry V encounters deceit, war and treachery after becoming King of England in the 15th century.',
     },
     {
       id: 3,
       title: 'Inside Job',
-      image: 'https://m.media-amazon.com/images/M/MV5BNDJkNmRhODEtMTMxMC00OTA1LWI0MDYtNjk0ZWJjYjU5ZjQ5XkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 7.7,
       year: 2022,
       seasons: '2 seasons',
       match: 95,
+      genres: ['Comedy', 'Animation', 'Sci-Fi'],
+      description: 'For employees of the Deep State, conspiracies aren\'t just theories — they\'re fact.',
     },
     {
       id: 4,
       title: 'Mindhunter',
-      image: 'https://m.media-amazon.com/images/M/MV5BYmJmM2Q1NTAtMzNmYy00MzBkLWJiNTUtY2Q5ZjUzNWRiOTk3XkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 8.6,
       year: 2019,
       seasons: '2 seasons',
       match: 98,
+      genres: ['Crime', 'Drama', 'Thriller'],
+      description: 'Two FBI agents set out on a sinister investigative odyssey to discover the brutal answers.',
     },
     {
       id: 5,
       title: 'Wednesday',
-      image: 'https://m.media-amazon.com/images/M/MV5BM2ZmMjEyZmYtOGM4YS00YTNhLWE3ZDMtNzQxM2RhNjBlODIyXkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 8.1,
       year: 2022,
       seasons: '1 season',
       match: 91,
+      genres: ['Comedy', 'Mystery', 'Fantasy'],
+      description: 'Wednesday Addams attempts to master her emerging psychic ability while solving a murder mystery.',
     },
   ];
 
@@ -99,47 +110,57 @@ export default function Home() {
     {
       id: 6,
       title: 'Breaking Bad',
-      image: 'https://m.media-amazon.com/images/M/MV5BYTJkN2FlN2QtOGY1ZC00ZjE5LWIxNzQtN2VmODZkNDZmODBhXkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 9.5,
       year: 2008,
       seasons: '5 seasons',
       match: 99,
+      genres: ['Crime', 'Drama', 'Thriller'],
+      description: 'A chemistry teacher diagnosed with cancer turns to cooking meth to secure his family\'s future.',
     },
     {
       id: 7,
       title: 'Stranger Things',
-      image: 'https://m.media-amazon.com/images/M/MV5BN2ZmYjg1YmItNWQ4OC00YWM0LWE0ZDktYThjOTZiZjhhN2Q2XkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 8.7,
       year: 2016,
       seasons: '4 seasons',
       match: 97,
+      genres: ['Drama', 'Fantasy', 'Horror'],
+      description: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments.',
     },
     {
       id: 8,
       title: 'The Witcher',
-      image: 'https://m.media-amazon.com/images/M/MV5BN2FiOWU4YzYtMzZiOS00MzcyLTlkOGEtOTgwZmEwMzAxMzA3XkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 8.0,
       year: 2019,
       seasons: '3 seasons',
       match: 94,
+      genres: ['Action', 'Adventure', 'Fantasy'],
+      description: 'Geralt of Rivia, a monster hunter, struggles to find his place in a world where people prove more wicked.',
     },
     {
       id: 9,
       title: 'Money Heist',
-      image: 'https://m.media-amazon.com/images/M/MV5BODI0ZTljYTMtODQ1NC00NmI0LTk1YWUtN2FlNDM1MDExMDlhXkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 8.2,
       year: 2017,
       seasons: '5 seasons',
       match: 96,
+      genres: ['Action', 'Crime', 'Mystery'],
+      description: 'A criminal mastermind who goes by "The Professor" has a plan to pull off the biggest heist in recorded history.',
     },
     {
       id: 10,
       title: 'The Crown',
-      image: 'https://m.media-amazon.com/images/M/MV5BY2U5NGMzYTgtZTdkMC00M2ZhLWJkZjYtMjZlYmJlNzBjMjAyXkEyXkFqcGc@._V1_.jpg',
+      image: '/thumnail.jpg',
       rating: 8.6,
       year: 2016,
       seasons: '6 seasons',
       match: 92,
+      genres: ['Drama', 'History'],
+      description: 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign and the events that shaped the second half of the 20th century.',
     },
   ];
 
@@ -153,18 +174,41 @@ export default function Home() {
     // Implement add to list logic
   };
 
+  const handleMoviePlay = (movieId: number) => {
+    console.log('Play movie:', movieId);
+    // Implement movie play logic
+  };
+
+  const handleMovieInfo = (movieId: number) => {
+    console.log('Show movie info:', movieId);
+    // Implement movie info/detail modal logic
+  };
+
   return (
     <div className="bg-[#00000] pb-10 min-h-screen">
-      <HeroBanner 
+      <HeroBanner
         slides={heroSlides}
         autoPlayInterval={6000}
         onWatchNow={handleWatchNow}
         onAddToList={handleAddToList}
       />
       <div className="relative mt-10 z-10">
-        <MovieRow title="For you" movies={forYouMovies} />
-        <MovieRow title="Continue Watching" movies={continueWatching} />
+        <MovieRow
+          title="For you"
+          movies={forYouMovies}
+          onPlay={handleMoviePlay}
+          onInfo={handleMovieInfo}
+        />
+        <MovieRow
+          title="Continue Watching"
+          movies={continueWatching}
+          onPlay={handleMoviePlay}
+          onInfo={handleMovieInfo}
+        />
       </div>
+
+      {/* Demo Auth Modal Button */}
+      <AuthDemo />
     </div>
   );
 }

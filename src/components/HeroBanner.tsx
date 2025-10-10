@@ -5,10 +5,10 @@ import HeroContent from './HeroContent';
 import SlideIndicators from './SlideIndicators';
 import VideoControls from './VideoControls';
 
-export default function HeroBanner({ 
-  slides, 
+export default function HeroBanner({
+  slides,
   onWatchNow,
-  onAddToList 
+  onAddToList
 }: HeroBannerProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -57,7 +57,7 @@ export default function HeroBanner({
   };
 
   return (
-    <div 
+    <div
       className="relative h-screen w-full overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -65,7 +65,7 @@ export default function HeroBanner({
       {/* Background */}
       <HeroBackground
         isVideoPlaying={isVideoPlaying}
-        videoSrc="/images/video.mp4"
+        videoSrc="video.mp4"
         imageSrc={slide.image}
         title={slide.title}
         showOverlay={!isVideoPlaying || showControls}
