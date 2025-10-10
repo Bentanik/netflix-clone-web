@@ -1,9 +1,15 @@
+import { Outlet } from 'react-router-dom';
+import Header from '@/components/Header';
+
 function App() {
   return (
-    <div className='bg-amber-500'>
-      123123
+    <div className="min-h-screen bg-gray-900 text-white">
+      <Header />
+      <main className="pt-20">
+        <Outlet />
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
