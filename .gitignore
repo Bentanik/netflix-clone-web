@@ -65,3 +65,5 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
+
+public/
