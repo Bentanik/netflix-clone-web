@@ -1,6 +1,7 @@
 import { Heart, Play, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useMovieStore } from '@/stores/zustand/useMovieStore';
+import CustomButton from '@/components/ui/CustomButton';
 
 interface MovieCardProps {
   id: number;
@@ -43,17 +44,17 @@ export default function MovieCard({
     <motion.div
       className="group relative cursor-pointer"
       whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       <div className="relative aspect-video rounded-md overflow-hidden bg-gray-900 shadow-xl">
-        {/* Movie Image */}
+        {/* Movie Image - full cover fixed */}
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
 
-        {/* Gradient overlay - stronger at bottom */}
+        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
 
         {/* Episode Number - Top Left */}
@@ -99,37 +100,33 @@ export default function MovieCard({
             {title}
           </motion.h3>
 
-          {/* Action buttons - visible on hover */}
-          <motion.div
-            className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
-            initial={{ y: 10 }}
-            whileHover={{ y: 0 }}
-          >
-            <motion.button
+          {/* Action Buttons - visible on hover */}
+          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+            <CustomButton
+              variant="primary"
+              size="md"
+              icon={Play}
               onClick={(e) => {
                 e.stopPropagation();
                 onPlay?.();
               }}
-              className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-white/90 text-black text-sm font-bold py-2.5 px-4 rounded-md transition-all shadow-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
+              className="flex-1"
             >
-              <Play className="w-4 h-4 fill-black" />
-              <span>Phát</span>
-            </motion.button>
-            <motion.button
+              Phát
+            </CustomButton>
+            <CustomButton
+              variant="secondary"
+              size="md"
+              icon={Info}
               onClick={(e) => {
                 e.stopPropagation();
                 onInfo?.();
               }}
-              className="flex-1 flex items-center justify-center gap-2 bg-gray-700/90 hover:bg-gray-600 text-white text-sm font-semibold py-2.5 px-4 rounded-md transition-all shadow-lg backdrop-blur-sm"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
+              className="flex-1"
             >
-              <Info className="w-4 h-4" />
-              <span>Thông tin</span>
-            </motion.button>
-          </motion.div>
+              Thông tin
+            </CustomButton>
+          </div>
         </div>
       </div>
     </motion.div>

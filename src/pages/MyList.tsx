@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { useMovieStore } from '@/stores/zustand/useMovieStore';
-import MovieCard from '@/components/MovieCard';
+import { MovieCard } from '@/components';
 
 export default function MyList() {
     const { myList } = useMovieStore();

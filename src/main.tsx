@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import './index.css'
-import ReloadLoading from './components/ReloadLoading'
+import { ReloadLoading } from '@/components'
+import Provider from '@/providers'
 
 export default function RootApp() {
   const [showLoader, setShowLoader] = useState(false)
@@ -40,7 +41,11 @@ export default function RootApp() {
 
   if (showLoader) return <ReloadLoading />
 
-  return <RouterProvider router={router} />
+  return (
+    <Provider>
+      <RouterProvider router={router} />
+    </Provider>
+  )
 }
 
 createRoot(document.getElementById('root')!).render(

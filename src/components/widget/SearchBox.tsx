@@ -11,7 +11,7 @@ interface SearchBoxProps {
 export default function SearchBox({ onSearch, placeholder = 'Search...' }: SearchBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const debouncedSearch = useDebounce(searchQuery, 500);
+  const debouncedSearch = useDebounce({ value: searchQuery, delay: 500 });
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -68,8 +68,8 @@ export default function SearchBox({ onSearch, placeholder = 'Search...' }: Searc
             initial={{ width: 40, opacity: 0 }}
             animate={{ width: 280, opacity: 1 }}
             exit={{ width: 40, opacity: 0 }}
-            transition={{ 
-              duration: 0.3, 
+            transition={{
+              duration: 0.3,
               ease: [0.4, 0, 0.2, 1],
               opacity: { duration: 0.2 }
             }}

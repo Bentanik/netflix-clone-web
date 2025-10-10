@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import type { HeroBannerProps } from '@/types/hero';
-import HeroBackground from './HeroBackground';
-import HeroContent from './HeroContent';
-import SlideIndicators from './SlideIndicators';
-import VideoControls from './VideoControls';
+import HeroBackground from '@/components/layout/HeroBackground';
+import HeroContent from '@/components/layout/HeroContent';
+import SlideIndicators from '@/components/widget/SlideIndicators';
+import VideoControls from '@/components/widget/VideoControls';
 
 export default function HeroBanner({
   slides,

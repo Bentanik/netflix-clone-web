@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import SearchBox from './SearchBox';
-import NotificationBell from './NotificationBell';
-import UserProfile from './UserProfile';
-import AuthModal from './AuthModal';
+import SearchBox from '@/components/widget/SearchBox';
+import NotificationBell from '@/components/widget/NotificationBell';
+import UserProfile from '@/components/widget/UserProfile';
+import AuthModal from '@/components/auth/AuthModal';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -12,6 +12,9 @@ interface HeaderProps {
 export default function Header({ onSearch }: HeaderProps) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
+
+  // TODO: Replace with Redux selector
+  const user = null; // Get from Redux store later
 
   const navItems = [
     { label: 'Home', path: '/home' },
@@ -22,13 +25,6 @@ export default function Header({ onSearch }: HeaderProps) {
     { label: 'Collections', path: '/collections' },
     { label: 'Friends', path: '/friends' },
   ];
-
-  // Mock user data - thay thế bằng data thật từ context/store
-  const mockUser = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    avatar: 'https://i.pravatar.cc/100',
-  };
 
   // Mock notifications
   const mockNotifications = [
@@ -60,7 +56,8 @@ export default function Header({ onSearch }: HeaderProps) {
 
   const handleLogout = () => {
     console.log('Logout clicked');
-    // Implement logout logic
+    // TODO: Implement Redux logout action here
+    // dispatch(logout())
   };
 
   const handleSettings = () => {
@@ -72,7 +69,7 @@ export default function Header({ onSearch }: HeaderProps) {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         {/* Background with better gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-transparent pointer-events-none" />
 
         <div className="relative flex items-center justify-between px-12 py-6">
           {/* Logo */}
@@ -105,14 +102,25 @@ export default function Header({ onSearch }: HeaderProps) {
 
           {/* Right side icons */}
           <div className="flex items-center gap-7">
-            <SearchBox onSearch={handleSearch} placeholder="Titles, people, genres" />
-            <NotificationBell notifications={mockNotifications} />
-            <UserProfile
-              user={mockUser}
-              onLogin={handleLogin}
-              onLogout={handleLogout}
-              onSettings={handleSettings}
-            />
+            {user ? (
+              <>
+                <SearchBox onSearch={handleSearch} placeholder="Titles, people, genres" />
+                <NotificationBell notifications={mockNotifications} />
+                <UserProfile
+                  user={user}
+                  onLogin={handleLogin}
+                  onLogout={handleLogout}
+                  onSettings={handleSettings}
+                />
+              </>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                Đăng nhập
+              </button>
+            )}
           </div>
         </div>
       </header>

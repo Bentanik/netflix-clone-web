@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
-/**
- * Hook để debounce một giá trị
- * @param value - Giá trị cần debounce
- * @param delay - Thời gian delay (ms)
- * @returns Giá trị đã được debounce
- */
-export function useDebounce<T>(value: T, delay: number = 500): T {
+interface UseDebounceOptions<T> {
+  value: T;
+  delay?: number;
+}
+
+export function useDebounce<T>({
+  value,
+  delay = 500,
+}: UseDebounceOptions<T>): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
