@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
     HeroBannerSection,
     ForYouSection,
@@ -9,10 +10,11 @@ import {
  * Trang chủ của ứng dụng Netflix Clone
  */
 export default function HomePage() {
+    const navigate = useNavigate();
+
     // Event handlers for Hero Banner
     const handleWatchNow = (slideId: number) => {
-        console.log('Watch now clicked for slide:', slideId);
-        // TODO: Implement watch logic
+        navigate(`/watch/${slideId}`);
     };
 
     const handleAddToList = (slideId: number) => {
@@ -22,13 +24,11 @@ export default function HomePage() {
 
     // Event handlers for Movie Rows
     const handleMoviePlay = (movieId: number) => {
-        console.log('Play movie:', movieId);
-        // TODO: Implement movie play logic
+        navigate(`/watch/${movieId}`);
     };
 
     const handleMovieInfo = (movieId: number) => {
-        console.log('Show movie info:', movieId);
-        // TODO: Implement movie info/detail modal logic
+        navigate(`/movie/${movieId}`);
     };
 
     return (

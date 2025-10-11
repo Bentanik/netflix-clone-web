@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { HeroSlide } from '@/types/hero';
+import { PlayIcon, PlusIcon } from 'lucide-react';
 
 interface HeroContentProps {
   slide: HeroSlide;
@@ -10,7 +11,7 @@ interface HeroContentProps {
 
 export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList }: HeroContentProps) {
   const containerVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       y: 20,
     },
@@ -26,8 +27,8 @@ export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList 
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5 }
     }
@@ -42,7 +43,7 @@ export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList 
     >
       {/* Badge */}
       {slide.badge && (
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="flex items-center gap-2 mb-3"
         >
@@ -52,18 +53,18 @@ export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList 
       )}
 
       {/* Title */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
         className="mb-5"
       >
-        <h1 className="text-5xl md:text-6xl font-bold mb-1 tracking-wider uppercase" style={{ 
+        <h1 className="text-5xl md:text-6xl font-bold mb-1 tracking-wider uppercase" style={{
           color: '#ffffff',
           textShadow: '3px 3px 6px rgba(0,0,0,0.8)'
         }}>
           {slide.title}
         </h1>
         {slide.subtitle && (
-          <p className="text-lg tracking-[0.15em] font-medium uppercase" style={{ 
+          <p className="text-lg tracking-[0.15em] font-medium uppercase" style={{
             color: '#ffffff',
             textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
           }}>
@@ -73,7 +74,7 @@ export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList 
       </motion.div>
 
       {/* Tags */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
         className="flex gap-3 text-sm text-white mb-4"
       >
@@ -86,7 +87,7 @@ export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList 
       </motion.div>
 
       {/* Description */}
-      <motion.p 
+      <motion.p
         variants={itemVariants}
         className="text-white text-base mb-6 leading-relaxed line-clamp-2 max-w-2xl"
       >
@@ -94,32 +95,34 @@ export default function HeroContent({ slide, isVisible, onWatchNow, onAddToList 
       </motion.p>
 
       {/* Action Buttons */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
-        className="flex items-center gap-4"
+        className="flex justify-start"
       >
-        <motion.button 
-          onClick={() => onWatchNow?.(slide.id)}
-          className="flex items-center gap-3 bg-white text-black px-8 py-3 rounded hover:bg-gray-200 transition-colors font-semibold text-base"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <motion.div
+          variants={itemVariants}
+          className="flex gap-4 w-full max-w-[400px]"
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          Xem ngay
-        </motion.button>
-        <motion.button 
-          onClick={() => onAddToList?.(slide.id)}
-          className="flex items-center gap-3 bg-transparent border-2 border-white text-white px-8 py-3 rounded hover:bg-white/20 transition-colors font-semibold text-base"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-          Chi tiết
-        </motion.button>
+          <motion.button
+            onClick={() => onWatchNow?.(slide.id)}
+            className="flex-1 flex items-center justify-center gap-2 bg-white text-black px-4 py-3 rounded hover:bg-gray-200 transition-colors font-semibold text-base"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <PlayIcon size={22} />
+            Xem ngay
+          </motion.button>
+
+          <motion.button
+            onClick={() => onAddToList?.(slide.id)}
+            className="flex-1 flex items-center justify-center gap-2 bg-transparent border-2 border-white text-white px-4 py-3 rounded hover:bg-white/20 transition-colors font-semibold text-base"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <PlusIcon size={22} />
+            Chi tiết
+          </motion.button>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

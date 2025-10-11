@@ -1,5 +1,7 @@
 // Widget Components
 export { default as MovieCard } from "./MovieCard";
+export { default as EpisodeCard } from "./EpisodeCard";
+export { default as EpisodeListCard } from "./EpisodeListCard";
 export { default as MovieRow } from "./MovieRow";
 export { default as SearchBox } from "./SearchBox";
 export { default as NotificationBell } from "./NotificationBell";

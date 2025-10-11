@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SearchBox from '@/components/widget/SearchBox';
 import NotificationBell from '@/components/widget/NotificationBell';
 import UserProfile from '@/components/widget/UserProfile';
-import AuthModal from '@/components/auth/AuthModal';
+
+// Lazy load AuthModal - chỉ load khi cần
+const AuthModal = lazy(() => import('@/components/auth/AuthModal'));
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -125,11 +127,13 @@ export default function Header({ onSearch }: HeaderProps) {
         </div>
       </header>
 
-      {/* Auth Modal */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+      {/* Auth Modal - Lazy loaded */}
+      <Suspense fallback={null}>
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+        />
+      </Suspense>
     </>
   );
 }

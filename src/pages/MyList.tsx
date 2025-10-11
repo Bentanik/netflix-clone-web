@@ -1,19 +1,19 @@
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useMovieStore } from '@/stores/zustand/useMovieStore';
 import { MovieCard } from '@/components';
 
 export default function MyList() {
+    const navigate = useNavigate();
     const { myList } = useMovieStore();
 
     const handleMoviePlay = (movieId: number) => {
-        console.log('Playing movie:', movieId);
-        // TODO: Navigate to player
+        navigate(`/watch/${movieId}`);
     };
 
     const handleMovieInfo = (movieId: number) => {
-        console.log('Show info for movie:', movieId);
-        // TODO: Show movie detail modal
+        navigate(`/movie/${movieId}`);
     };
 
     return (

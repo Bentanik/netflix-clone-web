@@ -35,13 +35,19 @@ export default function AuthModalWrapper({ isOpen, onClose, children }: AuthModa
                             {/* Background with gradient */}
                             <div className="relative bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-2xl">
                                 {/* Close button */}
-                                <button
+                                <motion.button
                                     onClick={onClose}
                                     className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-all"
                                     aria-label="Close modal"
+                                    initial={{ opacity: 0, rotate: -90, scale: 0 }}
+                                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                                    exit={{ opacity: 0, rotate: 90, scale: 0 }}
+                                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                                    whileHover={{ scale: 1.1, rotate: 90 }}
+                                    whileTap={{ scale: 0.9 }}
                                 >
                                     <X size={20} />
-                                </button>
+                                </motion.button>
 
                                 {/* Content */}
                                 <div className="p-6">

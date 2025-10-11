@@ -1,7 +1,6 @@
-import { Heart, Play, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useMovieStore } from '@/stores/zustand/useMovieStore';
-import CustomButton from '@/components/ui/CustomButton';
+import { Plus, Check } from 'lucide-react';
+import { useState, type MouseEvent } from 'react';
 
 interface MovieCardProps {
   id: number;
@@ -12,122 +11,111 @@ interface MovieCardProps {
   duration?: string;
   seasons?: string;
   match?: number;
-  genres?: string[];
   description?: string;
-  episode?: number;
+  genres?: string[];
   onPlay?: () => void;
   onInfo?: () => void;
 }
 
+/**
+ * MovieCard - Netflix style movie/series card
+ * Large card with full details (like Inception in the image)
+ */
 export default function MovieCard({
-  id,
   title,
   image,
+  rating,
+  year,
+  duration,
+  seasons,
+  match,
   description,
-  episode,
-  onPlay,
-  onInfo
+  genres,
+  onInfo,
 }: MovieCardProps) {
-  const { addToMyList, removeFromMyList, isInMyList } = useMovieStore();
-  const inMyList = isInMyList(id);
-
-  const handleToggleMyList = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (inMyList) {
-      removeFromMyList(id);
-    } else {
-      addToMyList({ id, title, image, description, episode });
-    }
-  };
+  const [isInList, setIsInList] = useState(false);
 
   return (
     <motion.div
-      className="group relative cursor-pointer"
+      className="group relative cursor-pointer bg-zinc-900 rounded-lg overflow-hidden"
       whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      transition={{ duration: 0.2 }}
+      onClick={onInfo}
     >
-      <div className="relative aspect-video rounded-md overflow-hidden bg-gray-900 shadow-xl">
-        {/* Movie Image - full cover fixed */}
+      {/* Movie Poster */}
+      <div className="relative aspect-[2/3] overflow-hidden">
         <img
           src={image}
           alt={title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover"
         />
 
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
+      </div>
 
-        {/* Episode Number - Top Left */}
-        {episode && (
-          <motion.div
-            className="absolute top-2 left-2"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+      {/* Info Section */}
+      <div className="p-4">
+        {/* Title and Add Button */}
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="text-white font-bold text-xl flex-1 line-clamp-2 leading-tight">
+            {title}
+          </h3>
+          <motion.button
+            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              setIsInList(!isInList);
+            }}
+            className="ml-2 w-8 h-8 rounded-full border-2 border-zinc-400 flex items-center justify-center flex-shrink-0 hover:border-white transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <div className="bg-black/70 backdrop-blur-sm px-2 py-1 rounded">
-              <p className="text-white/90 text-[10px] font-semibold tracking-wide">
-                EP {episode}
-              </p>
+            {isInList ? (
+              <Check className="w-4 h-4 text-white" strokeWidth={3} />
+            ) : (
+              <Plus className="w-4 h-4 text-zinc-400 group-hover:text-white" strokeWidth={3} />
+            )}
+          </motion.button>
+        </div>
+
+        {/* Metadata */}
+        <div className="flex items-center gap-3 mb-3 text-sm">
+          {/* IMDb Rating */}
+          {rating && (
+            <div className="flex items-center gap-1">
+              <div className="bg-yellow-400 text-black font-bold px-1.5 py-0.5 rounded text-xs">
+                IMDb
+              </div>
+              <span className="text-white font-semibold">{rating}</span>
             </div>
-          </motion.div>
+          )}
+
+          {year && <span className="text-zinc-400">{year}</span>}
+          {duration && <span className="text-zinc-400">{duration}</span>}
+          {seasons && <span className="text-zinc-400">{seasons}</span>}
+          {match && <span className="text-green-500 font-semibold">{match}% match</span>}
+        </div>
+
+        {/* Description */}
+        {description && (
+          <p className="text-zinc-400 text-sm mb-3 line-clamp-3 leading-relaxed">
+            {description}
+          </p>
         )}
 
-        {/* Add to List Button - Top Right */}
-        <motion.button
-          className={`absolute top-2 right-2 p-1.5 rounded-full backdrop-blur-sm border transition-all ${inMyList
-            ? 'bg-red-600 border-red-600 text-white'
-            : 'bg-black/50 border-white/40 text-white hover:bg-black/70 hover:border-white'
-            }`}
-          onClick={handleToggleMyList}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Heart
-            className={`w-3.5 h-3.5 transition-all ${inMyList ? 'fill-white' : ''}`}
-            strokeWidth={2.5}
-          />
-        </motion.button>
-
-        {/* Bottom Info */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          {/* Title */}
-          <motion.h3
-            className="text-white font-bold text-lg mb-3 line-clamp-2 leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            {title}
-          </motion.h3>
-
-          {/* Action Buttons - visible on hover */}
-          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <CustomButton
-              variant="primary"
-              size="md"
-              icon={Play}
-              onClick={(e) => {
-                e.stopPropagation();
-                onPlay?.();
-              }}
-              className="flex-1"
-            >
-              Phát
-            </CustomButton>
-            <CustomButton
-              variant="secondary"
-              size="md"
-              icon={Info}
-              onClick={(e) => {
-                e.stopPropagation();
-                onInfo?.();
-              }}
-              className="flex-1"
-            >
-              Thông tin
-            </CustomButton>
+        {/* Genres */}
+        {genres && genres.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {genres.map((genre) => (
+              <span
+                key={genre}
+                className="text-zinc-400 text-xs"
+              >
+                {genre}
+              </span>
+            ))}
           </div>
-        </div>
+        )}
       </div>
     </motion.div>
   );

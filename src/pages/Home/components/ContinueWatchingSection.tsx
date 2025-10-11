@@ -1,8 +1,8 @@
-import { MovieRow } from '@/components';
+import { EpisodeCard } from '@/components';
 
 /**
  * Continue Watching Section - Component riêng cho Home page
- * Hiển thị danh sách phim đang xem dở
+ * Hiển thị danh sách episodes đang xem dở
  */
 
 interface ContinueWatchingSectionProps {
@@ -10,71 +10,60 @@ interface ContinueWatchingSectionProps {
     onInfo: (movieId: number) => void;
 }
 
-export default function ContinueWatchingSection({ onPlay, onInfo }: ContinueWatchingSectionProps) {
-    const continueWatchingMovies = [
+export default function ContinueWatchingSection({ onPlay }: ContinueWatchingSectionProps) {
+    const episodes = [
         {
-            id: 6,
-            title: 'Breaking Bad',
-            image: '/thumnail.jpg',
-            rating: 9.5,
-            year: 2008,
-            seasons: '5 seasons',
-            match: 99,
-            genres: ['Crime', 'Drama', 'Thriller'],
-            description: 'A chemistry teacher diagnosed with cancer turns to cooking meth to secure his family\'s future.',
+            id: 10,
+            episode: 10,
+            title: 'Inside Reagan',
+            image: 'https://images.unsplash.com/photo-1574267432644-f74f8c95df9f?w=400&h=225&fit=crop',
+            description: 'Reagan must travel to her own subconscious mind to find the user-ID\'s password, from when she was eight.',
+        },
+        {
+            id: 3,
+            episode: 3,
+            title: 'Blue Bloods',
+            image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=225&fit=crop',
+            description: 'A renewed contract with subterranean and elope eldritch reptilians is threatened by an ill-conceived amag.',
         },
         {
             id: 7,
-            title: 'Stranger Things',
-            image: '/thumnail.jpg',
-            rating: 8.7,
-            year: 2016,
-            seasons: '4 seasons',
-            match: 97,
-            genres: ['Drama', 'Fantasy', 'Horror'],
-            description: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments.',
-        },
-        {
-            id: 8,
-            title: 'The Witcher',
-            image: '/thumnail.jpg',
-            rating: 8.0,
-            year: 2019,
-            seasons: '3 seasons',
-            match: 94,
-            genres: ['Action', 'Adventure', 'Fantasy'],
-            description: 'Geralt of Rivia, a monster hunter, struggles to find his place in a world where people prove more wicked.',
+            episode: 7,
+            title: 'Sex Machina',
+            image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=225&fit=crop',
+            description: 'Reagan builds a robot to practice her dating skills. Nothing goes wrong from her.',
         },
         {
             id: 9,
-            title: 'Money Heist',
-            image: '/thumnail.jpg',
-            rating: 8.2,
-            year: 2017,
-            seasons: '5 seasons',
-            match: 96,
-            genres: ['Action', 'Crime', 'Mystery'],
-            description: 'A criminal mastermind who goes by "The Professor" has a plan to pull off the biggest heist in recorded history.',
+            episode: 9,
+            title: 'The Brettfast Club',
+            image: 'https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=400&h=225&fit=crop',
+            description: 'Brett hopes to turn a blast in the past be the team going on a nostalgia-laced mission to a small town.',
         },
         {
-            id: 10,
-            title: 'The Crown',
-            image: '/thumnail.jpg',
-            rating: 8.6,
-            year: 2016,
-            seasons: '6 seasons',
-            match: 92,
-            genres: ['Drama', 'History'],
-            description: 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign and the events that shaped the second half of the 20th century.',
+            id: 11,
+            episode: 11,
+            title: 'Flat Earth Wedding',
+            image: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=400&h=225&fit=crop',
+            description: 'Reagan conspires to keep her dad from finding out about her mom\'s wedding, while J.R. ropes Brett.',
         },
     ];
 
     return (
-        <MovieRow
-            title="Continue Watching"
-            movies={continueWatchingMovies}
-            onPlay={onPlay}
-            onInfo={onInfo}
-        />
+        <div className="px-12 mb-10">
+            <h2 className="text-2xl font-bold text-white mb-4">Continue Watching</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {episodes.map((ep) => (
+                    <EpisodeCard
+                        key={ep.id}
+                        episode={ep.episode}
+                        title={ep.title}
+                        image={ep.image}
+                        description={ep.description}
+                        onPlay={() => onPlay(ep.id)}
+                    />
+                ))}
+            </div>
+        </div>
     );
 }
