@@ -24,11 +24,7 @@ export const registerSchema = z
       .string()
       .min(1, "Mật khẩu là bắt buộc")
       .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
-      .max(50, "Mật khẩu không được quá 50 ký tự")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường và 1 số"
-      ),
+      .max(50, "Mật khẩu không được quá 50 ký tự"),
     confirmPassword: z.string().min(1, "Xác nhận mật khẩu là bắt buộc"),
   })
   .refine((data) => data.password === data.confirmPassword, {

@@ -4,6 +4,7 @@ import AuthModalWrapper from './AuthModalWrapper';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import type { LoginFormData, RegisterFormData } from '@/schemas/authSchema';
+import { useRegisterEmail } from '@/services';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -15,15 +16,30 @@ type AuthMode = 'login' | 'register';
 export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [mode, setMode] = useState<AuthMode>('login');
 
+  const { mutate: register } = useRegisterEmail();
+
   const onLoginSubmit = async (data: LoginFormData) => {
     console.log('Login:', data);
     onClose();
   };
 
   const onRegisterSubmit = (data: RegisterFormData) => {
-    console.log('Register:', data);
-    // TODO: Implement Redux register action here
-    onClose();
+    register(
+      {
+        email: data.email,
+        password: data.password,
+        displayName: data.displayName
+      },
+      {
+        onError: (error) => {
+          console.error('Registration error:', error);
+        },
+        onSuccess: (response) => {
+          console.log('Registration successful:', response);
+          onClose();
+        },
+      }
+    );
   };
 
   const switchToRegister = () => setMode('register');
