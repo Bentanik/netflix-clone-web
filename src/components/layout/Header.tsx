@@ -3,8 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import SearchBox from '@/components/widget/SearchBox';
 import NotificationBell from '@/components/widget/NotificationBell';
 import UserProfile from '@/components/widget/UserProfile';
+import { useAppSelector } from '@/stores';
+import { useLogout } from '@/services';
 
-// Lazy load AuthModal - chỉ load khi cần
 const AuthModal = lazy(() => import('@/components/auth/AuthModal'));
 
 interface HeaderProps {
@@ -15,17 +16,17 @@ export default function Header({ onSearch }: HeaderProps) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
 
-  // TODO: Replace with Redux selector
-  const user = null; // Get from Redux store later
+  const user = useAppSelector(state => state.user);
+  const { mutate: logout } = useLogout();
 
   const navItems = [
-    { label: 'Home', path: '/home' },
-    { label: 'TV Shows', path: '/tv-shows' },
-    { label: 'Movies', path: '/movies' },
-    { label: 'New & Popular', path: '/new' },
-    { label: 'My List', path: '/my-list' },
-    { label: 'Collections', path: '/collections' },
-    { label: 'Friends', path: '/friends' },
+    { label: 'Home', path: '/home', authRequired: false },
+    { label: 'TV Shows', path: '/tv-shows', authRequired: false },
+    { label: 'Movies', path: '/movies', authRequired: false },
+    { label: 'New & Popular', path: '/new', authRequired: false },
+    { label: 'My List', path: '/my-list', authRequired: true },
+    { label: 'Collections', path: '/collections', authRequired: true },
+    { label: 'Friends', path: '/friends', authRequired: true },
   ];
 
   // Mock notifications
@@ -57,9 +58,7 @@ export default function Header({ onSearch }: HeaderProps) {
   };
 
   const handleLogout = () => {
-    console.log('Logout clicked');
-    // TODO: Implement Redux logout action here
-    // dispatch(logout())
+    logout();
   };
 
   const handleSettings = () => {
@@ -84,6 +83,7 @@ export default function Header({ onSearch }: HeaderProps) {
             <nav className="hidden md:flex gap-7">
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
+                if (item.authRequired && !user.displayName) return null;
                 return (
                   <Link
                     key={item.path}
@@ -104,12 +104,16 @@ export default function Header({ onSearch }: HeaderProps) {
 
           {/* Right side icons */}
           <div className="flex items-center gap-7">
-            {user ? (
+            {user.displayName ? (
               <>
                 <SearchBox onSearch={handleSearch} placeholder="Titles, people, genres" />
                 <NotificationBell notifications={mockNotifications} />
                 <UserProfile
-                  user={user}
+                  user={{
+                    name: user.displayName || 'User',
+                    email: user.email || "Email",
+                    avatar: user.avatarUrl || undefined,
+                  }}
                   onLogin={handleLogin}
                   onLogout={handleLogout}
                   onSettings={handleSettings}

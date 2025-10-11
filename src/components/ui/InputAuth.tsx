@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff } from 'lucide-react'
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -47,9 +47,9 @@ const InputAuth = forwardRef<HTMLInputElement, InputAuthProps>(
                             tabIndex={-1}
                         >
                             {showPassword ? (
-                                <EyeOff className="w-4 h-4" />
+                                <EyeIcon className="w-4 h-4" />
                             ) : (
-                                <Eye className="w-4 h-4" />
+                                <EyeOffIcon className="w-4 h-4" />
                             )}
                         </button>
                     )}

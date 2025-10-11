@@ -1,25 +1,15 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail, Lock, User } from 'lucide-react';
 import { motion } from 'framer-motion';
-import InputAuth from '../ui/InputAuth';
-import CustomButton from '../ui/CustomButton';
-import { registerSchema } from '@/schemas/authSchema';
-import type { RegisterFormData } from '@/schemas/authSchema';
+import InputAuth from '@/components/ui/InputAuth';
+import CustomButton from '@/components/ui/CustomButton';
+import useRegister from '@/hooks/useRegister';
 
 interface RegisterFormProps {
-    onSubmit: (data: RegisterFormData) => void;
     onSwitchToLogin: () => void;
 }
 
-export default function RegisterForm({ onSubmit, onSwitchToLogin }: RegisterFormProps) {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<RegisterFormData>({
-        resolver: zodResolver(registerSchema),
-    });
+export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
+    const { register, errors, isPending: isSubmitting, handleSubmit, onSubmit: handleRegister } = useRegister();
 
     return (
         <motion.div
@@ -38,7 +28,7 @@ export default function RegisterForm({ onSubmit, onSwitchToLogin }: RegisterForm
             <p className="text-gray-400 text-sm mb-6 text-center">Tạo tài khoản mới</p>
 
             {/* Register Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit((data) => handleRegister(data, onSwitchToLogin))} className="space-y-4">
                 <InputAuth
                     {...register('displayName')}
                     label="Tên hiển thị"
@@ -46,6 +36,7 @@ export default function RegisterForm({ onSubmit, onSwitchToLogin }: RegisterForm
                     placeholder="Tên hiển thị"
                     icon={User}
                     error={errors.displayName?.message}
+                    autoComplete="off"
                 />
 
                 <InputAuth
@@ -55,6 +46,7 @@ export default function RegisterForm({ onSubmit, onSwitchToLogin }: RegisterForm
                     placeholder="Email"
                     icon={Mail}
                     error={errors.email?.message}
+                    autoComplete="off"
                 />
 
                 <InputAuth
@@ -64,6 +56,7 @@ export default function RegisterForm({ onSubmit, onSwitchToLogin }: RegisterForm
                     placeholder="Mật khẩu"
                     icon={Lock}
                     error={errors.password?.message}
+                    autoComplete="off"
                 />
 
                 <InputAuth
@@ -73,6 +66,7 @@ export default function RegisterForm({ onSubmit, onSwitchToLogin }: RegisterForm
                     placeholder="Xác nhận mật khẩu"
                     icon={Lock}
                     error={errors.confirmPassword?.message}
+                    autoComplete="off"
                 />
 
                 <CustomButton

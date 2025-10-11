@@ -1,25 +1,16 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
-import InputAuth from '../ui/InputAuth';
-import CustomButton from '../ui/CustomButton';
-import { loginSchema } from '@/schemas/authSchema';
-import type { LoginFormData } from '@/schemas/authSchema';
+import InputAuth from '@/components/ui/InputAuth';
+import CustomButton from '@/components/ui/CustomButton';
+import useLogin from '@/hooks/useLogin';
 
 interface LoginFormProps {
-    onSubmit: (data: LoginFormData) => void;
+    onClose: () => void;
     onSwitchToRegister: () => void;
 }
 
-export default function LoginForm({ onSubmit, onSwitchToRegister }: LoginFormProps) {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<LoginFormData>({
-        resolver: zodResolver(loginSchema),
-    });
+export default function LoginForm({ onClose, onSwitchToRegister }: LoginFormProps) {
+    const { register, errors, isPending: isSubmitting, handleSubmit, onSubmit: handleLogin } = useLogin();
 
     return (
         <motion.div
@@ -38,7 +29,7 @@ export default function LoginForm({ onSubmit, onSwitchToRegister }: LoginFormPro
             <p className="text-gray-400 text-sm mb-6 text-center">Chào mừng trở lại!</p>
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit((data) => handleLogin(data, onClose))} className="space-y-4">
                 <InputAuth
                     {...register('email')}
                     label="Email"

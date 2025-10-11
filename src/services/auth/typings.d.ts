@@ -20,10 +20,12 @@ declare namespace API {
   type TAuthUser = {
     displayName: string;
     email: string;
+    avatarUrl?: string;
   };
 
   type TLoginResponse = {
     authUser: TAuthUser;
-    authToken: TAuthToken;
+    accessToken: TAuthToken;
+    refreshToken: TAuthToken;
   };
 }

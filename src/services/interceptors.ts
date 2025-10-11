@@ -1,110 +1,136 @@
 import axios, { AxiosError } from "axios";
 import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { tokenStorage } from "@/lib/auth_utils";
+import AUTH_API_PATH from "@/services/auth/api-path";
+import { store } from "@/stores/redux";
+import { clearUser } from "@/stores/redux/user-slice";
+import { notificationService } from "@/services/notification-service";
 
-/**
- * Axios Instance với interceptors
- * Base URL và timeout configuration
- */
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080",
-  timeout: 30000,
+// ==================== CONSTANTS ====================
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const TIMEOUT = 30000;
+const MUTATION_METHODS = ["POST", "PUT", "PATCH", "DELETE"];
+// ==================== UTILITIES ====================
+const shouldAddIdempotenceKey = (method?: string): boolean =>
+  method ? MUTATION_METHODS.includes(method.toUpperCase()) : false;
+
+// ==================== AXIOS INSTANCE ====================
+const request = axios.create({
+  baseURL: BASE_URL,
+  timeout: TIMEOUT,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-/**
- * Request Interceptor
- * Tự động thêm token vào header
- */
-axiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // Lấy token từ localStorage
-    const token = localStorage.getItem("access_token");
+// ==================== REFRESH TOKEN ====================
+const refreshTokenAsync = async (refreshToken: string) => {
+  const response = await request<TResponse<API.TLoginResponse>>(
+    AUTH_API_PATH.REFRESH_TOKEN,
+    {
+      method: "PUT",
+      data: refreshToken,
+    }
+  );
+  return response.data;
+};
 
-    if (token && config.headers) {
+// ==================== REQUEST INTERCEPTOR ====================
+request.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    if (!config.headers) return config;
+
+    // Add Authorization token
+    const token = tokenStorage.getAccessToken();
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Add idempotence key for mutation requests
+    if (
+      !config.headers["x-request-id"] &&
+      shouldAddIdempotenceKey(config.method)
+    ) {
+      config.headers["x-request-id"] = uuidv4();
     }
 
     return config;
   },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  }
+  (error: AxiosError) => Promise.reject(error)
 );
 
-/**
- * Response Interceptor
- * Xử lý refresh token và error handling
- */
-axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
+// ==================== RESPONSE INTERCEPTOR ====================
+request.interceptors.response.use(
+  (response: AxiosResponse) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
 
-    // Nếu lỗi 401 và chưa retry
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Handle 401 Unauthorized with token refresh
+    if (error.response?.status === 401 && !originalRequest?._retry) {
       originalRequest._retry = true;
 
-      try {
-        const refreshToken = localStorage.getItem("refresh_token");
-
-        if (!refreshToken) {
-          // Không có refresh token, redirect đến login
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          window.location.href = "/login";
-          return Promise.reject(error);
-        }
-
-        // Gọi API refresh token
-        const response = await axios.post(
-          `${
-            import.meta.env.VITE_API_URL || "http://localhost:8080"
-          }/auth/api/v1/refresh-token`,
-          { refreshToken }
+      const refreshToken = tokenStorage.getRefreshToken();
+      if (!refreshToken) {
+        notificationService.error(
+          "Phiên đăng nhập hết hạn",
+          "Vui lòng đăng nhập lại."
         );
 
-        const { token } = response.data.data.authToken;
+        tokenStorage.clearTokens();
+        store.dispatch(clearUser());
 
-        // Lưu token mới
-        localStorage.setItem("access_token", token);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1500);
 
-        // Retry request với token mới
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
+        return Promise.reject(error);
+      }
+
+      try {
+        const response = await refreshTokenAsync(refreshToken);
+        const newAccessToken = response.data?.accessToken;
+        const newRefreshToken = response.data?.refreshToken;
+
+        if (!newAccessToken || !newRefreshToken) {
+          throw new Error("Invalid token response");
         }
 
-        return axiosInstance(originalRequest);
+        tokenStorage.setTokens(newAccessToken.token, newRefreshToken.token);
+
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken.token}`;
+        }
+
+        return request(originalRequest);
       } catch (refreshError) {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        window.location.href = "/login";
+        notificationService.error(
+          "Phiên đăng nhập hết hạn",
+          "Không thể làm mới phiên đăng nhập. Vui lòng đăng nhập lại."
+        );
+
+        tokenStorage.clearTokens();
+        store.dispatch(clearUser());
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1500);
+
         return Promise.reject(refreshError);
       }
     }
 
-    // Xử lý các lỗi khác
-    if (error.response?.status === 403) {
-      console.error(
-        "Forbidden: You do not have permission to access this resource"
-      );
+    // Map client errors (<500) to TErrors format
+    if (error.response && error.response.status < 500) {
+      const responseError: TErrors = error.response.data as TErrors;
+      return Promise.reject(responseError);
     }
 
-    if (error.response?.status === 404) {
-      console.error("Not Found: The requested resource was not found");
-    }
-
-    if (error.response?.status === 500) {
-      console.error("Server Error: Something went wrong on the server");
-    }
-
+    // Server errors (>=500) reject as is
     return Promise.reject(error);
   }
 );
 
-export default axiosInstance;
+export default request;

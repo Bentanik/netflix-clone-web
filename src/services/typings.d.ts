@@ -5,7 +5,7 @@ declare type TError = {
 };
 
 declare type TErrors = {
-  errors?: TError[] | null;
+  errors: TError[];
   isSuccess: boolean;
   isFailure: boolean;
 };

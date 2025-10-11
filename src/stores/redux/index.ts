@@ -23,7 +23,11 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({});
+import userSlice from "./user-slice";
+
+const rootReducer = combineReducers({
+  user: userSlice,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

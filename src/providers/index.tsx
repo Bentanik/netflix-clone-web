@@ -1,12 +1,13 @@
 /**
  * Root Provider Component
- * Wraps the app with Redux Store and React Query providers
- * Order matters: Store -> Query -> Children
+ * Wraps the app with Redux Store, React Query, and Notification providers
+ * Order matters: Store -> Query -> Notification -> Children
  */
 
 import React from "react";
 import { StoreProvider } from "@/providers/redux-provider";
 import { QueryProvider } from "@/providers/query-provider";
+import { NotificationProvider } from "@/providers/notification-provider";
 
 export default function Provider({
   children,
@@ -14,7 +15,9 @@ export default function Provider({
   return (
     <StoreProvider>
       <QueryProvider>
-        {children}
+        <NotificationProvider position="top-right">
+          {children}
+        </NotificationProvider>
       </QueryProvider>
     </StoreProvider>
   );

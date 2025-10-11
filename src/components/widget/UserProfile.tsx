@@ -31,7 +31,7 @@ export default function UserProfile({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Sign In
+        Đăng nhập
       </motion.button>
     );
   }
@@ -152,7 +152,7 @@ export default function UserProfile({
                   whileHover={{ x: 4 }}
                 >
                   <LogOut size={18} className="text-gray-400 group-hover:text-red-500 transition-colors" />
-                  <span className="group-hover:text-red-500 transition-colors">Sign out</span>
+                  <span className="group-hover:text-red-500 transition-colors">Đăng xuất</span>
                 </motion.button>
               </motion.div>
             </motion.div>

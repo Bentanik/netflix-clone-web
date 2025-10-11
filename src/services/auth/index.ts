@@ -1,12 +1,9 @@
-export * as authAPI from "./api-services";
+export * as authAPI from "@/services/auth/api-services";
 
-// React Query Hooks
 export {
   useRegisterEmail,
   useLoginEmail,
   useLogout,
-  useRefreshToken,
-} from "./services";
+} from "@/services/auth/services";
 
-// API Paths
-export { default as authPaths } from "./api-path";
+export { default as authPaths } from "@/services/auth/api-path";

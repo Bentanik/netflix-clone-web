@@ -1,3 +1,3 @@
-export { default as axiosInstance } from "./interceptors";
+export { default as request } from "@/services/interceptors";
 
-export * from "./auth";
+export * from "@/services/auth";
