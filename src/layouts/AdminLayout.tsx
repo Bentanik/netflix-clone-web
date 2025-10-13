@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Film, Users, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Film, Users, Settings, LogOut, Tags, UserPlus, Plus } from 'lucide-react';
 
 /**
  * AdminLayout - Layout cho quản trị viên
@@ -9,7 +9,10 @@ import { LayoutDashboard, Film, Users, Settings, LogOut } from 'lucide-react';
 export default function AdminLayout() {
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
-        { icon: Film, label: 'Movies', path: '/admin/movies' },
+        { icon: Tags, label: 'Categories', path: '/admin/categories' },
+        { icon: UserPlus, label: 'People', path: '/admin/people' },
+        { icon: Film, label: 'Media', path: '/admin/media' },
+        { icon: Plus, label: 'Create Media', path: '/admin/media/create' },
         { icon: Users, label: 'Users', path: '/admin/users' },
         { icon: Settings, label: 'Settings', path: '/admin/settings' },
     ];

@@ -8,6 +8,10 @@ const MyList = lazy(() => import('@/pages/MyList'));
 const MovieDetail = lazy(() => import('@/pages/MovieDetail'));
 const VideoPlayer = lazy(() => import('@/pages/VideoPlayer'));
 const AdminDashboard = lazy(() => import('@/pages/Admin/Dashboard'));
+const Categories = lazy(() => import('@/pages/Admin/Categories'));
+const People = lazy(() => import('@/pages/Admin/People'));
+const MediaCreate = lazy(() => import('@/pages/Admin/MediaCreate'));
+const MediaList = lazy(() => import('@/pages/Admin/MediaList'));
 
 const router = createBrowserRouter([
     // User Routes
@@ -67,6 +71,38 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<PageLoader />}>
                         <AdminDashboard />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'categories',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <Categories />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'people',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <People />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'media',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <MediaList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'media/create',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <MediaCreate />
                     </Suspense>
                 ),
             },
