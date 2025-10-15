@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { UserLayout, AdminLayout } from '@/layouts';
+import { UserLayout, AdminLayout } from '@/components/layout';
 import PageLoader from '@/components/layout/PageLoader';
 
 const HomePage = lazy(() => import('@/pages/Home'));
@@ -10,7 +10,6 @@ const VideoPlayer = lazy(() => import('@/pages/VideoPlayer'));
 const AdminDashboard = lazy(() => import('@/pages/Admin/Dashboard'));
 const Categories = lazy(() => import('@/pages/Admin/Categories'));
 const People = lazy(() => import('@/pages/Admin/People'));
-const MediaCreate = lazy(() => import('@/pages/Admin/MediaCreate'));
 const MediaList = lazy(() => import('@/pages/Admin/MediaList'));
 
 const router = createBrowserRouter([
@@ -95,14 +94,6 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<PageLoader />}>
                         <MediaList />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'media/create',
-                element: (
-                    <Suspense fallback={<PageLoader />}>
-                        <MediaCreate />
                     </Suspense>
                 ),
             },

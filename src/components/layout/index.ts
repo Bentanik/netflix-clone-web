@@ -5,3 +5,6 @@ export { default as MovieHeroBanner } from "./MovieHeroBanner";
 export { default as HeroBackground } from "./HeroBackground";
 export { default as HeroContent } from "./HeroContent";
 export { default as PageLoader } from "./PageLoader";
+
+export { default as UserLayout } from "./UserLayout";
+export { default as AdminLayout } from "./AdminLayout";
